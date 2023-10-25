@@ -1,11 +1,10 @@
 import traceback
 import sys
 
-from actions import decode_json, encode_json
-from bytenigma import bytenigma
-from logging import eprint
+from krypto import bytenigma
+from krypto.actions import decode_json, encode_json
+from krypto.logging import eprint
 
-# argument parsing in main?
 def main():
     if len(sys.argv) != 2:
         eprint("Usage: python3 main.py <input.json>")
