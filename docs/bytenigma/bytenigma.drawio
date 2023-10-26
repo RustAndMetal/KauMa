@@ -1,0 +1,61 @@
+<mxfile host="65bd71144e">
+    <diagram id="_ZfjUaqbg1nFNCkQ1-6G" name="Seite-1">
+        <mxGraphModel dx="808" dy="442" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="256 auf 256 mapping&lt;br&gt;dreht sich nach jeder eingabe (rechts um eins nach &quot;oben&quot;&lt;br&gt;=&amp;gt; Wenn Null oben &quot;überläuft&quot;, Drehung nächster Rotor)" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="200" y="80" width="90" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="1 byte" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="90" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="110" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="256 auf 256 mapping&lt;br&gt;(Drehung nach &quot;Überlauf&quot; von 1 (wenn dieser bei 0 ankommt)&lt;br&gt;=&amp;gt; nach vollständigem Durchlauf setzen)" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="370" y="80" width="90" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" style="edgeStyle=none;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="6" target="6" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="720" y="138" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="730" y="138"/>
+                            <mxPoint x="730" y="253"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" value="256 auf 256 mapping (Drehung nach &quot;Überlauf&quot; von 2 (wenn dieser bei 0 ankommt))" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="80" width="90" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;" parent="1" vertex="1">
+                    <mxGeometry x="460" y="110" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="Bitweises&lt;br&gt;Komplement" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#2D7600;fillColor=#60a917;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="725" y="175" width="90" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;direction=west;" parent="1" vertex="1">
+                    <mxGeometry x="460" y="220" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;direction=west;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="220" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.4;arrowSize=0.4;direction=west;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="220" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="Rotor 1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="210" y="35" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Rotor 2" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="384" y="35" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="Rotor 3" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="555" y="35" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="Text" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="125" y="285" width="50" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
