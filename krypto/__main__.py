@@ -10,7 +10,7 @@ def main():
        It also handles errors and prints them to stderr
     """
     if len(sys.argv) != 2:
-        eprint("Usage: python3 main.py <input.json>")
+        eprint("Usage: python3 -m krypto <input.json>")
         return
     try:
         with open(sys.argv[1], "r") as f:

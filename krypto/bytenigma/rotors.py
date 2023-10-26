@@ -10,6 +10,7 @@ def turn_rotors(rotors: List[List[int]], turn_list: List[List[int]]) -> None:
     """
     for index, rotor in enumerate(rotors):
         turn_list[index] += 1
+        turn_list[index] %= len(rotor)
         if rotor[turn_list[index] - 1] != 0:
             break
 
