@@ -6,6 +6,9 @@ from krypto.actions import decode_json, encode_json
 from krypto.logging import eprint
 
 def main():
+    """The main-Function parses the input, calls the action and encodes the output
+       It also handles errors and prints them to stderr
+    """
     if len(sys.argv) != 2:
         eprint("Usage: python3 main.py <input.json>")
         return
