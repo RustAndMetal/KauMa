@@ -3,6 +3,8 @@ import json
 
 from typing import Callable, Tuple
 
+#TODO: FIX Json parsing and encoding
+
 #global but private
 __ACTIONS = {}
 
@@ -20,8 +22,6 @@ def decode_json(json_string: str) -> Tuple[Callable, dict]:
 
     if "action" not in json_data:
         raise KeyError("No action in json specified")
-    
-    json_data["input"] = base64.b64decode(json_data["input"])
 
     action = json_data["action"]
 
@@ -32,18 +32,17 @@ def decode_json(json_string: str) -> Tuple[Callable, dict]:
 
     return __ACTIONS[action], json_data
 
-def encode_json(output: str) -> str:
+def encode_json(output: dict) -> str:
     """
-    Encodes the output string to JSON
+    Encodes the output dict to a JSON string
 
     Args:
-        output (str): The output string to encode
+        output (dict): The output dict to encode
     
     Returns:
         str: The JSON encoded output
     """
-    output = base64.b64encode(output).decode("utf-8")
-    return json.dumps({"output": output})
+    return json.dumps(output)
 
 def action(action_name):
     """
