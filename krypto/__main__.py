@@ -1,7 +1,12 @@
 import traceback
 import sys
 
+# load all required actions, so that they are discovered by the action decorator
+# DO NOT REMOVE 
+# maybe fix this with loop over ..._actions after refactoring all action modules (pkgutil)
 from krypto import bytenigma
+
+
 from krypto.actions import decode_json, encode_json
 from krypto.logging import eprint
 
