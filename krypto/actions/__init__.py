@@ -3,8 +3,6 @@ import json
 
 from typing import Callable, Tuple
 
-#TODO: FIX Json parsing and encoding
-
 #global but private
 __ACTIONS = {}
 
