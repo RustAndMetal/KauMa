@@ -48,7 +48,10 @@ class MyPaddingHandler(socketserver.BaseRequestHandler):
         Returns:
             bytes: the received bytes
         """
-        out = b""
-        while len(out) < n:
-            out += self.request.recv(n - len(out))
-        return out
+        all_out = b""
+        while len(all_out) < n:
+            out = self.request.recv(n - len(all_out))
+            if len(out) == 0:
+                raise ConnectionError("Connection closed by client")
+            all_out += out
+        return all_out
