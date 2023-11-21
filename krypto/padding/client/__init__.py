@@ -74,7 +74,11 @@ def decrypt_bytes(valid_candidates: list, real_iv: bytes, known_decrypted_bytes:
                 + [padding_byte ^ b for b in known_decrypted_bytes]
             )
             sock.sendall(bytes(iv))
-        for candidate in valid_candidates:
+        # We mutate the list in the loop, so copy it
+        # Otherwise, we would iterate over the list we are mutating
+        # which would potentially not consume all bytes from the server.
+        # Subsequent calls to sock.recv(1) would then return unexpected values.
+        for candidate in list(valid_candidates):
             if sock.recv(1) == b"\x00":
                 valid_candidates.remove(candidate)
     assert len(valid_candidates) == 1, "More than one valid candidate for padding byte"
