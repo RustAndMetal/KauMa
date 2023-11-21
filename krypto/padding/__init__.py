@@ -1,6 +1,7 @@
 import base64
 from krypto.actions import action
 from .client import recover
+from . import server
 
 @action("padding-oracle-attack")
 def padding_oracle_attack(hostname: str, port: int, iv: str, ciphertext: str) -> dict:
