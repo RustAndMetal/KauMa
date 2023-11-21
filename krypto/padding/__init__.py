@@ -11,7 +11,15 @@ def padding_oracle_attack(hostname: str, port: int, iv: str, ciphertext: str) ->
     """
     iv = base64.b64decode(iv)
     ciphertext = base64.b64decode(ciphertext)
-    plaintext = recover(hostname, port, iv, ciphertext)
+    assert len(ciphertext) % len(iv) == 0, "Ciphertext must be a multiple of the block size"
+
+    ciphertext_blocks = []
+    for i in range(0, len(ciphertext), len(iv)):
+        ciphertext_blocks.append(ciphertext[i:i+len(iv)])
+
+    plaintext = b""
+    for prev, block in zip([iv] + ciphertext_blocks, ciphertext_blocks):
+        plaintext += recover(hostname, port, prev, block)
     return {
         "plaintext": base64.b64encode(plaintext).decode()
     }
