@@ -3,8 +3,9 @@ import json
 
 from typing import Callable, Tuple
 
-#global but private
+# global but private
 __ACTIONS = {}
+
 
 def decode_json(json_string: str) -> Tuple[Callable, dict]:
     """
@@ -12,7 +13,7 @@ def decode_json(json_string: str) -> Tuple[Callable, dict]:
 
     Args:
         json_string (str): The JSON string to decode
-    
+
     Returns:
         tuple: A tuple containing the action and input
     """
@@ -25,10 +26,11 @@ def decode_json(json_string: str) -> Tuple[Callable, dict]:
 
     if action not in __ACTIONS:
         raise KeyError("Unknown action: " + action)
-    
+
     del json_data["action"]
 
     return __ACTIONS[action], json_data
+
 
 def encode_json(output: dict) -> str:
     """
@@ -36,11 +38,12 @@ def encode_json(output: dict) -> str:
 
     Args:
         output (dict): The output dict to encode
-    
+
     Returns:
         str: The JSON encoded output
     """
     return json.dumps(output)
+
 
 def action(action_name):
     """
@@ -49,8 +52,9 @@ def action(action_name):
     Args:
         action_name (str): The name of the action
     """
+
     def wrapper(f):
         __ACTIONS[action_name] = f
         return f
-    return wrapper
 
+    return wrapper

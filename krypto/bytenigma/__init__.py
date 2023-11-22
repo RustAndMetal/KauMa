@@ -3,6 +3,7 @@ from typing import List
 from krypto.actions import action
 from .rotors import rotors_encrypt, rotor_reverse_init, turn_rotors
 
+
 @action("bytenigma")
 def bytenigma(rotors: List[List[int]], input: str) -> dict:
     """Encrypts the input with the given rotors
@@ -27,7 +28,5 @@ def bytenigma(rotors: List[List[int]], input: str) -> dict:
         final_output.append(output)
         # turn rotors
         turn_rotors(rotors, turn_list)
-        
-    return {
-        "output": base64.b64encode(bytes(final_output)).decode()
-    }
+
+    return {"output": base64.b64encode(bytes(final_output)).decode()}
