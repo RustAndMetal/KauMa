@@ -18,13 +18,20 @@ def recover(host: str, port: int, real_iv: bytes, ciphertext: bytes) -> bytes:
         known_decrypted_bytes = []
         for i in reversed(range(len(real_iv))):
             padding_byte = len(real_iv) - i
-            valid_candidates = validated_candidates(real_iv, known_decrypted_bytes, sock, padding_byte)
-            known_decrypted_bytes = decrypt_bytes(valid_candidates, real_iv, known_decrypted_bytes, sock, padding_byte)
+            valid_candidates = validated_candidates(
+                real_iv, known_decrypted_bytes, sock, padding_byte
+            )
+            known_decrypted_bytes = decrypt_bytes(
+                valid_candidates, real_iv, known_decrypted_bytes, sock, padding_byte
+            )
         # Close connection with server by sending length 0
         sock.sendall((0).to_bytes(length=2, byteorder="little"))
-    return bytes([a ^ b for a,b in zip(known_decrypted_bytes, real_iv)])
+    return bytes([a ^ b for a, b in zip(known_decrypted_bytes, real_iv)])
 
-def validated_candidates(real_iv: bytes, known_decrypted_bytes: list, sock: socket.socket, padding_byte: int) -> list:
+
+def validated_candidates(
+    real_iv: bytes, known_decrypted_bytes: list, sock: socket.socket, padding_byte: int
+) -> list:
     """Validates the candidates for the padding byte
 
     Args:
@@ -51,7 +58,14 @@ def validated_candidates(real_iv: bytes, known_decrypted_bytes: list, sock: sock
             valid_candidates.append(candidate)
     return valid_candidates
 
-def decrypt_bytes(valid_candidates: list, real_iv: bytes, known_decrypted_bytes: list, sock: socket.socket, padding_byte: int) -> list:
+
+def decrypt_bytes(
+    valid_candidates: list,
+    real_iv: bytes,
+    known_decrypted_bytes: list,
+    sock: socket.socket,
+    padding_byte: int,
+) -> list:
     """Decrypts the bytes
 
     Args:
@@ -65,11 +79,13 @@ def decrypt_bytes(valid_candidates: list, real_iv: bytes, known_decrypted_bytes:
         list: list of the known decrypted bytes, including the newly decrypted byte
     """
     if len(valid_candidates) > 1:
-        assert padding_byte == 1, "Only for the first padding byte, two valid paddings can occur"
+        assert (
+            padding_byte == 1
+        ), "Only for the first padding byte, two valid paddings can occur"
         sock.sendall(len(valid_candidates).to_bytes(length=2, byteorder="little"))
         for candidate in valid_candidates:
             iv = (
-                [0xff] * (len(real_iv) - len(known_decrypted_bytes) - 1)
+                [0xFF] * (len(real_iv) - len(known_decrypted_bytes) - 1)
                 + [candidate]
                 + [padding_byte ^ b for b in known_decrypted_bytes]
             )

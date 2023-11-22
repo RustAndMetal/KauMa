@@ -14,7 +14,13 @@ def turn_rotors(rotors: List[List[int]], turn_list: List[List[int]]) -> None:
         if rotor[turn_list[index] - 1] != 0:
             break
 
-def rotors_encrypt(rotors: List[List[int]], reverse_rotors: List[List[int]], turn_list: List[int], input: int) -> int:
+
+def rotors_encrypt(
+    rotors: List[List[int]],
+    reverse_rotors: List[List[int]],
+    turn_list: List[int],
+    input: int,
+) -> int:
     """Encrypts the input with the given rotors
 
     Args:
@@ -28,10 +34,11 @@ def rotors_encrypt(rotors: List[List[int]], reverse_rotors: List[List[int]], tur
     """
     for rotor, turn in zip(rotors, turn_list):
         input = rotor[(input + turn) % len(rotor)]
-    input = input ^ 0xff
+    input = input ^ 0xFF
     for rotor, turn in zip(reverse_rotors, turn_list[::-1]):
         input = (rotor[input] - turn) % len(rotor)
     return input
+
 
 def rotor_reverse_init(rotors: List[List[int]]) -> List[List[int]]:
     """Initializes the reverse rotors

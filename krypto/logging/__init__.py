@@ -1,5 +1,6 @@
 import sys
 
+
 def eprint(*args, **kwargs):
     """
     Print to stderr
@@ -7,7 +8,7 @@ def eprint(*args, **kwargs):
     Args:
         *args: The arguments to print
         **kwargs: The keyword arguments to print
-    
+
     Returns:
         None
     """
