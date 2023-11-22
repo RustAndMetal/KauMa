@@ -2,6 +2,8 @@ from typing import List
 
 
 class Polynom:
+    REDUCTION_POLYNOM = 0x100000000000000000000000000000087
+
     def __init__(self, polynom: int):
         self.polynom: int = polynom
 
@@ -70,3 +72,39 @@ class Polynom:
             bool: true if the polynoms are equal, false otherwise
         """
         return self.polynom == other.polynom
+
+    def __add__(self, other: "Polynom") -> "Polynom":
+        """Method to add two polynoms
+
+        Returns:
+            Polynom: the sum of the polynoms
+        """
+        return Polynom(self.polynom ^ other.polynom)
+
+    def __sub__(self, other: "Polynom") -> "Polynom":
+        """Method to subtract two polynoms
+
+        Returns:
+            Polynom: the difference of the polynoms
+        """
+        return self + other
+
+    def __mul__(self, other: "Polynom") -> "Polynom":
+        """Method to multiply two polynoms
+
+        Returns:
+            Polynom: the product of the polynoms
+        """
+        product = 0
+        a_factor = self.polynom
+        b_factor = other.polynom
+        # implemented russian peasant multiplication algorithm
+        # https://en.wikipedia.org/wiki/Finite_field_arithmetic#C_programming_example
+        while a_factor != 0 and b_factor != 0:
+            if b_factor & 1:
+                product ^= a_factor
+            a_factor <<= 1
+            if a_factor >> 128:
+                a_factor ^= Polynom.REDUCTION_POLYNOM
+            b_factor >>= 1
+        return Polynom(product)

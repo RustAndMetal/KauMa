@@ -32,3 +32,20 @@ def gcm_poly2block(exponents: List[int]) -> dict:
     block = Polynom.from_exponents(exponents).to_block()
     return {"block": base64.b64encode(block).decode()}
 
+
+@action("gcm-clmul")
+def gcm_clmul(a: str, b: str) -> dict:
+    """Performs a carryless multiplication of two polynomials
+
+    Args:
+        a (str): The first polynomial
+        b (str): The second polynomial
+
+    Returns:
+        dict: dictionary containing the result
+    """
+    a = polynom.Polynom.from_block(base64.b64decode(a))
+    b = polynom.Polynom.from_block(base64.b64decode(b))
+    result = (a * b).to_block()
+    return {"a_times_b": base64.b64encode(result).decode()}
+

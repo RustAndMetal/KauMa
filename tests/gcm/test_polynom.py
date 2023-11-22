@@ -20,3 +20,11 @@ def test_polynomial_conversion():
                  108, 109, 111, 114, 115, 116, 118, 121, 126]
     assert polynom.Polynom.from_block(long_block) == polynom.Polynom.from_exponents(long_exponents)
     
+def test_polynomial_arithmetic():
+    assert polynom.Polynom(0) + polynom.Polynom(0) == polynom.Polynom(0)
+    assert polynom.Polynom(0) + polynom.Polynom(0xdeadbeef) == polynom.Polynom(0xdeadbeef)
+    assert polynom.Polynom(0xdeadbeef) + polynom.Polynom(0xcafeaffe) == polynom.Polynom(0x14531111)
+
+    a = polynom.Polynom.from_block(base64.b64decode("jjYoD6kfN+/Y/g4Hl991Cw=="))
+    b = polynom.Polynom.from_block(base64.b64decode("tQsToM4bzOQtot/1w4x8PA=="))
+    assert a * b == polynom.Polynom.from_block(base64.b64decode("khnvYitpTW8Sv3ZUmFqasw=="))
