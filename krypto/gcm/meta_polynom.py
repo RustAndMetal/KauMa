@@ -184,4 +184,4 @@ class MetaPolynom:
         """
         while len(b) > 0:
             a, b = b, a % b
-        return a
+        return a.to_monic()
