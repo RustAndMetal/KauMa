@@ -8,6 +8,15 @@ class Polynom:
     def __init__(self, polynom: int):
         self.polynom: int = polynom
 
+    @property
+    def inverse(self) -> "Polynom":
+        """Calculates the inverse of a polynom
+
+        Returns:
+            Polynom: the inverse of the polynom
+        """
+        return self ** (2**128 - 2)
+
     @staticmethod
     def from_block(block: bytes) -> "Polynom":
         """Converts a block of GCM to a polynomial
@@ -69,36 +78,51 @@ class Polynom:
     def __eq__(self, other: "Polynom") -> bool:
         """Method to compare two polynoms
 
+        Args:
+            other (Polynom): the other polynom
+
         Returns:
             bool: true if the polynoms are equal, false otherwise
         """
         return self.polynom == other.polynom
 
-    def __add__(self, other: "Polynom") -> "Polynom":
+    def __add__(summand_a: "Polynom", summand_b: "Polynom") -> "Polynom":
         """Method to add two polynoms
+
+        Args:
+            summand_a (Polynom): first summand
+            summand_b (Polynom): second summand
 
         Returns:
             Polynom: the sum of the polynoms
         """
-        return Polynom(self.polynom ^ other.polynom)
+        return Polynom(summand_a.polynom ^ summand_b.polynom)
 
-    def __sub__(self, other: "Polynom") -> "Polynom":
+    def __sub__(minuend: "Polynom", subtrahend: "Polynom") -> "Polynom":
         """Method to subtract two polynoms
+
+        Args:
+            minuend (Polynom): the minuend
+            subtrahend (Polynom): the subtrahend
 
         Returns:
             Polynom: the difference of the polynoms
         """
-        return self + other
+        return minuend + subtrahend
 
-    def __mul__(self, other: "Polynom") -> "Polynom":
+    def __mul__(factor_a: "Polynom", factor_b: "Polynom") -> "Polynom":
         """Method to multiply two polynoms
+
+        Args:
+            factor_a (Polynom): first factor
+            factor_b (Polynom): second factor
 
         Returns:
             Polynom: the product of the polynoms
         """
         product = 0
-        a_factor = self.polynom
-        b_factor = other.polynom
+        a_factor = factor_a.polynom
+        b_factor = factor_b.polynom
         # implemented russian peasant multiplication algorithm
         # https://en.wikipedia.org/wiki/Finite_field_arithmetic#C_programming_example
         while a_factor != 0 and b_factor != 0:
@@ -109,3 +133,33 @@ class Polynom:
                 a_factor ^= Polynom.REDUCTION_POLYNOM
             b_factor >>= 1
         return Polynom(product)
+
+    def __truediv__(numerator: "Polynom", denumerator: "Polynom") -> "Polynom":
+        """Method to divide two polynoms
+
+        Args:
+            numerator (Polynom): the numerator
+            denumerator (Polynom): the denumerator
+
+        Returns:
+            Polynom: the quotient of the polynoms
+        """
+        return numerator * denumerator.inverse
+
+    def __pow__(base: "Polynom", exponent: int) -> "Polynom":
+        """Method to exponentiate a polynom
+
+        Args:
+            base (Polynom): the base
+            exponent (int): the exponent
+
+        Returns:
+            Polynom: the exponentiated polynom
+        """
+        result = Polynom(1)
+        while exponent > 0:
+            if exponent & 1:
+                result *= base
+            exponent >>= 1
+            base *= base
+        return result

@@ -3,6 +3,7 @@ import base64
 from typing import List
 from .polynom import Polynom
 from .aesgcm import AESGCM
+from .meta_polynom import MetaPolynom
 
 
 @action("gcm-block2poly")
@@ -64,7 +65,7 @@ def gcm_encrypt(key: str, nonce: str, associated_data: str, plaintext: str) -> d
     Returns:
         dict: dictionary containing the ciphertext, auth_tag, Y0 and H
     """
-    gcm = aesgcm.AESGCM(
+    gcm = AESGCM(
         base64.b64decode(key),
         base64.b64decode(nonce),
         base64.b64decode(associated_data),
@@ -80,4 +81,84 @@ def gcm_encrypt(key: str, nonce: str, associated_data: str, plaintext: str) -> d
         "Y0": base64.b64encode(Y0).decode(),
         "H": base64.b64encode(H).decode(),
     }
+
+
+def base64_to_MetaPolynom(a: List[str]) -> MetaPolynom:
+    """Converts a list of base64 encoded polynomials to a MetaPolynom
+
+    Args:
+        a (List[str]): The list of base64 encoded polynomials
+
+    Returns:
+        MetaPolynom: The MetaPolynom
+    """
+    a = [polynom.Polynom.from_block(base64.b64decode(x)) for x in a]
+    return MetaPolynom(a)
+
+
+def MetaPolynom_to_base64(a: MetaPolynom) -> List[str]:
+    """Converts a MetaPolynom to a list of base64 encoded polynomials
+
+    Args:
+        a (MetaPolynom): The MetaPolynom
+
+    Returns:
+        List[str]: The list of base64 encoded polynomials
+    """
+    return [base64.b64encode(x.to_block()).decode() for x in a]
+
+
+def gcm_poly_arithmetic_action(f):
+    def action(a: List[str], b: List[str]) -> dict:
+        """Performs an arithmetic operation on two polynomials
+
+        Args:
+            a (List[str]): The first polynomial
+            b (List[str]): The second polynomial
+
+        Returns:
+            dict: dictionary containing the result
+        """
+        result = f(base64_to_MetaPolynom(a), base64_to_MetaPolynom(b))
+        return {"result": MetaPolynom_to_base64(result)}
+
+    return action
+
+
+action("gcm-poly-add")(gcm_poly_arithmetic_action(lambda a, b: a + b))
+action("gcm-poly-mul")(gcm_poly_arithmetic_action(lambda a, b: a * b))
+action("gcm-poly-div")(gcm_poly_arithmetic_action(lambda a, b: a // b))
+action("gcm-poly-mod")(gcm_poly_arithmetic_action(lambda a, b: a % b))
+action("gcm-poly-gcd")(gcm_poly_arithmetic_action(lambda a, b: a.gcd(b)))
+
+
+@action("gcm-poly-pow")
+def gcm_poly_pow(base: List[str], exponent: int) -> dict:
+    """Calculates the power of a polynomial
+
+    Args:
+        base (List[str]): The polynomial base
+        exponent (int): The exponent
+
+    Returns:
+        dict: dictionary containing the power of the polynomial
+    """
+    result = base64_to_MetaPolynom(base) ** exponent
+    return {"result": MetaPolynom_to_base64(result)}
+
+
+@action("gcm-poly-powmod")
+def gcm_poly_powmod(base: List[str], exponent: int, modulo: List[str]) -> dict:
+    """Calculates the power of a polynomial modulo another polynomial
+
+    Args:
+        base (List[str]): The polynomial base
+        exponent (int): The exponent
+        modulo (List[str]): The modulo
+
+    Returns:
+        dict: dictionary containing the power of the polynomial modulo another polynomial
+    """
+    result = pow(base64_to_MetaPolynom(base), exponent, base64_to_MetaPolynom(modulo))
+    return {"result": MetaPolynom_to_base64(result)}
 
