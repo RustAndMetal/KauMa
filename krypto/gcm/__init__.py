@@ -50,6 +50,7 @@ def gcm_clmul(a: str, b: str) -> dict:
     result = (a * b).to_block()
     return {"a_times_b": base64.b64encode(result).decode()}
 
+
 @action("gcm-encrypt")
 def gcm_encrypt(key: str, nonce: str, associated_data: str, plaintext: str) -> dict:
     """Encrypts the plaintext with the given key, nonce and associated data
@@ -71,8 +72,8 @@ def gcm_encrypt(key: str, nonce: str, associated_data: str, plaintext: str) -> d
     )
     ciphertext = gcm.gen_ciphertext()
     auth_tag = gcm.gen_auth_tag(ciphertext)
-    Y0 = gcm.generate_counter(1)
-    H = gcm.create_auth_key()
+    Y0 = gcm.y0
+    H = gcm.auth_key
     return {
         "ciphertext": base64.b64encode(ciphertext).decode(),
         "auth_tag": base64.b64encode(auth_tag).decode(),

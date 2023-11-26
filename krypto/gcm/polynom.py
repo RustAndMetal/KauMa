@@ -2,7 +2,8 @@ from typing import List
 
 
 class Polynom:
-    REDUCTION_POLYNOM = 0x100000000000000000000000000000087
+    REDUCTION_POLYNOM = 1 << 128 | 1 << 7 | 1 << 2 | 1 << 1 | 1 << 0
+    # REDUCTION_POLYNOM = 0x100000000000000000000000000000087
 
     def __init__(self, polynom: int):
         self.polynom: int = polynom
