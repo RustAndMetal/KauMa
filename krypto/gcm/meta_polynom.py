@@ -184,4 +184,18 @@ class MetaPolynom:
         """
         while len(b) > 0:
             a, b = b, a % b
-        return a
+        return a.to_monic()
+
+    def rand_poly(length: int) -> "MetaPolynom":
+        """Generates a random polynom of a given degree
+
+        Args:
+            degree (int): the degree of the polynom
+
+        Returns:
+            Polynom: the random polynom
+        """
+        poly = []
+        for _ in range(length):
+            poly.append(polynom.Polynom.rand_polynom())
+        return MetaPolynom(poly)

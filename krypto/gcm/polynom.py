@@ -1,3 +1,4 @@
+import random
 from typing import List
 
 
@@ -163,3 +164,15 @@ class Polynom:
             exponent >>= 1
             base *= base
         return result
+
+    @staticmethod
+    def rand_polynom() -> "Polynom":
+        """Generates a random polynom of a given degree
+
+        Args:
+            degree (int): the degree of the polynom
+
+        Returns:
+            Polynom: the random polynom
+        """
+        return Polynom(random.getrandbits(Polynom.REDUCTION_POLYNOM.bit_length() - 1))
