@@ -4,6 +4,7 @@ from typing import List
 from .polynom import Polynom
 from .aesgcm import AESGCM
 from .meta_polynom import MetaPolynom
+from .cantor import gcm_recover
 
 
 @action("gcm-block2poly")
@@ -162,3 +163,34 @@ def gcm_poly_powmod(base: List[str], exponent: int, modulo: List[str]) -> dict:
     result = pow(base64_to_MetaPolynom(base), exponent, base64_to_MetaPolynom(modulo))
     return {"result": MetaPolynom_to_base64(result)}
 
+
+@action("gcm-recover")
+def gcm_recover(nonce: str, msg1: dict, msg2: dict, msg3: dict, msg4: dict) -> dict:
+    """Recovers the auth_tag of a message encrypted with GCM
+
+    Args:
+        nonce (str): The nonce (unused, maybe use later to check that every message used the same one)
+        msg1 (dict): The first message
+        msg2 (dict): The second message
+        msg3 (dict): The third message
+        msg4 (dict): The fourth message without auth_tag
+
+    Returns:
+        dict: dictionary containing the recovered plaintext
+    """
+
+    def base64_msg_decode(msg):
+        result = {
+            "ciphertext": base64.b64decode(msg["ciphertext"]),
+            "associated_data": base64.b64decode(msg["associated_data"]),
+        }
+        if "auth_tag" in msg:
+            result["auth_tag"] = base64.b64decode(msg["auth_tag"])
+        return result
+
+    msg1 = base64_msg_decode(msg1)
+    msg2 = base64_msg_decode(msg2)
+    msg3 = base64_msg_decode(msg3)
+    msg4 = base64_msg_decode(msg4)
+    msg4_tag = cantor.gcm_recover(msg1, msg2, msg3, msg4)
+    return {"msg4_tag": base64.b64encode(msg4_tag).decode()}
